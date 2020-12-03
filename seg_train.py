@@ -14,7 +14,7 @@ from tqdm import tqdm
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--lr', type=float, default=1e-5, help='initial learning rate')
-parser.add_argument('--batch_size', type=int, default=6, help='batch size')
+parser.add_argument('--batch_size', type=int, default=32, help='batch size')
 parser.add_argument('--num_workers', type=int, default=4, help='number of data loading workers')
 parser.add_argument('--result_dir', type=str, default='results/real', help='directory to save train results')
 parser.add_argument('--train_prop', type=int, default=0.9, help='Proportion of training data to total data')
