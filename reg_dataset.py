@@ -52,7 +52,6 @@ class PoseDataset(data.Dataset):
         center_point = self.center_points[index]
 
         raw_rgb, center = letterbox_image(raw_rgb, (192, 192), center=center_point)
-        cv2.circle(raw_rgb, tuple(center.astype(int)), 3, (0, 255, 255), cv2.FILLED)
 
         rgb = raw_rgb.copy()
         cv2.cvtColor(rgb, cv2.COLOR_BGR2RGB)
