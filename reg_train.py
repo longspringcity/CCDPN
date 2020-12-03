@@ -57,10 +57,8 @@ def train():
         for i, data in tqdm(enumerate(train_dataloader), total=num_batch,
                             desc='Training... Epoch: {:02d}, progress'.format(epoch + 1)):
             rgb, real_pos = data
-            print(real_pos)
             rgb = rgb.cuda()
             real_pos = real_pos.cuda()
-            print(real_pos)
             pred_pos = model(rgb)
             loss = criterion(pred_pos, real_pos)
             optimizer.zero_grad()
