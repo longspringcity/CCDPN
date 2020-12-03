@@ -143,7 +143,7 @@ def train():
                 val_acc_5,
                 val_acc_10,
                 val_acc_20,
-                val_acc_30.
+                val_acc_30,
                 val_acc_50))
 
 
