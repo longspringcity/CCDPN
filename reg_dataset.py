@@ -34,7 +34,6 @@ class PoseDataset(data.Dataset):
 
         center_point_path = os.path.join(self.crop_data_path, 'center_points.txt')
         self.center_points = np.loadtxt(center_point_path)
-        print(self.center_points)
 
         self.length = len(self.img_list)
         self.colorjitter = transforms.ColorJitter(brightness=0.5, contrast=0.5, saturation=0.5, hue=0.3)
@@ -50,7 +49,7 @@ class PoseDataset(data.Dataset):
         img_path = self.img_list[index]
         raw_rgb = cv2.imread(img_path)[:, :, :3]
 
-        center_point = self.center_points[index]
+        center_point = self.center_points[index, :2]
 
         raw_rgb, center = letterbox_image(raw_rgb, (192, 192), center=center_point)
 

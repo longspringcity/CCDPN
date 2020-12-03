@@ -59,7 +59,7 @@ def train():
             rgb, real_pos = data
             print(real_pos)
             rgb = rgb.cuda()
-            real_pos = real_pos[:2].cuda()
+            real_pos = real_pos.cuda()
             print(real_pos)
             pred_pos = model(rgb)
             loss = criterion(pred_pos, real_pos)
