@@ -23,11 +23,10 @@ class RegTransNet(nn.Module):
     def __init__(self):
         super(RegTransNet, self).__init__()
         self.entire_resnet = torchvision.models.resnet34(pretrained=False)
-        self.backbone_resnet = nn.Sequential(*(list(self.entire_resnet.children())[:-1]))
-        self.output = Linear(512, 2)
+        self.output = Linear(1000, 2)
 
     def forward(self, x):
-        x = self.backbone_resnet(x)
+        x = self.entire_resnet(x)
         x = self.output(x)
         return x
 
