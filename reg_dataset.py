@@ -30,7 +30,10 @@ class PoseDataset(data.Dataset):
 
         self.cat_names = ['bottle', 'bowl', 'camera', 'can', 'laptop', 'mug']
         self.crop_data_path = os.path.join(self.data_dir, self.source, self.mode, self.cat_names[self.cat - 1])
-        self.img_list = sorted(glob.glob(os.path.join(self.crop_data_path, '*.png')))
+        self.img_list = sorted(glob.glob(os.path.join(self.crop_data_path, '*_rgb.png')))
+
+        center_point_path = os.path.join(self.crop_data_path, 'center_points.txt')
+        self.center_points = np.loadtxt(center_point_path)
 
         self.length = len(self.img_list)
         self.colorjitter = transforms.ColorJitter(brightness=0.5, contrast=0.5, saturation=0.5, hue=0.3)
@@ -46,12 +49,7 @@ class PoseDataset(data.Dataset):
         img_path = self.img_list[index]
         raw_rgb = cv2.imread(img_path)[:, :, :3]
 
-        center_point_path = os.path.join(self.crop_data_path, 'center_points.txt')
-        center_points = np.loadtxt(center_point_path)
-        print(len(self.img_list))
-        print(len(center_points))
-        print(center_points)
-        center_point = center_points[index]
+        center_point = self.center_points[index]
 
         raw_rgb, center = letterbox_image(raw_rgb, (192, 192), center=center_point)
         cv2.circle(raw_rgb, tuple(center.astype(int)), 3, (0, 255, 255), cv2.FILLED)
