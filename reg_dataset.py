@@ -50,7 +50,7 @@ class PoseDataset(data.Dataset):
         center_points = np.loadtxt(center_point_path)
         center_point = center_points[index]
 
-        raw_rgb, center = letterbox_image(raw_rgb, center_point, (192, 192))
+        raw_rgb, center = letterbox_image(raw_rgb, (192, 192), center=center_point)
         cv2.circle(raw_rgb, tuple(center.astype(int)), 3, (0, 255, 255), cv2.FILLED)
 
         rgb = raw_rgb.copy()
