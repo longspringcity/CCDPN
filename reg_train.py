@@ -78,7 +78,7 @@ def train():
         if opt.evaluate_train:
             # 测试训练集
             model.eval()
-            train_success_5, train_success_10, train_success_20, train_success_30 = 0, 0, 0, 0
+            train_success_5, train_success_10, train_success_20, train_success_30, train_success_50 = 0, 0, 0, 0, 0
             random.shuffle(train_idx)
             train_val_sampler = sampler.RandomSampler(train_idx[:opt.num_val])  # 用于测试训练集的采样器
             train_val_dataloader = DataLoader(train_dataset, batch_size=opt.batch_size, sampler=train_val_sampler,
@@ -93,23 +93,27 @@ def train():
                 train_success_10 += torch.sum((error_distances <= 10)).item()
                 train_success_20 += torch.sum((error_distances <= 20)).item()
                 train_success_30 += torch.sum((error_distances <= 30)).item()
+                train_success_50 += torch.sum((error_distances <= 50)).item()
             train_acc_5 = 100 * (train_success_5 / opt.num_val)
             train_acc_10 = 100 * (train_success_10 / opt.num_val)
             train_acc_20 = 100 * (train_success_20 / opt.num_val)
             train_acc_30 = 100 * (train_success_30 / opt.num_val)
+            train_acc_50 = 100 * (train_success_50 / opt.num_val)
             # write results to tensorboard
             # summary = tf.Summary(value=[tf.Summary.Value(tag='train_acc_5', simple_value=train_acc_5),
             #                             tf.Summary.Value(tag='train_acc_10', simple_value=train_acc_10),
             #                             tf.Summary.Value(tag='train_acc_20', simple_value=train_acc_20)])
             # tb_writer.add_summary(summary, global_step)
             logger.info(
-                'train accuracies: 5px -- {:.2f}, 10px -- {:.2f}, 20px -- {:.2f}, 30px -- {:.2f}'.format(train_acc_5,
-                                                                                                         train_acc_10,
-                                                                                                         train_acc_20,
-                                                                                                         train_acc_30))
+                'train accuracies: 5px -- {:.2f}, 10px -- {:.2f}, 20px -- {:.2f}, 30px -- {:.2f}, 50px -- {:.2f}'.format(
+                    train_acc_5,
+                    train_acc_10,
+                    train_acc_20,
+                    train_acc_30,
+                    train_acc_50))
         # 测试验证集
         model.eval()
-        test_success_5, test_success_10, test_success_20, test_success_30 = 0, 0, 0, 0
+        test_success_5, test_success_10, test_success_20, test_success_30, test_success_50 = 0, 0, 0, 0, 0
         random.shuffle(test_idx)
         test_sampler = sampler.RandomSampler(test_idx[:opt.num_val])
         val_dataloader = DataLoader(test_dataset, batch_size=opt.batch_size, sampler=test_sampler,
@@ -124,18 +128,23 @@ def train():
             test_success_10 += torch.sum((error_distances <= 10)).item()
             test_success_20 += torch.sum((error_distances <= 20)).item()
             test_success_30 += torch.sum((error_distances <= 30)).item()
+            test_success_50 += torch.sum((error_distances <= 50)).item()
         val_acc_5 = 100 * (test_success_5 / opt.num_val)
         val_acc_10 = 100 * (test_success_10 / opt.num_val)
         val_acc_20 = 100 * (test_success_20 / opt.num_val)
         val_acc_30 = 100 * (test_success_30 / opt.num_val)
+        val_acc_50 = 100 * (test_success_50 / opt.num_val)
         # summary = tf.Summary(value=[tf.Summary.Value(tag='test_acc_5', simple_value=val_acc_5),
         #                             tf.Summary.Value(tag='test_acc_10', simple_value=val_acc_10),
         #                             tf.Summary.Value(tag='test_acc_20', simple_value=val_acc_20)])
         # tb_writer.add_summary(summary, global_step)
-        logger.info('val accuracies: 5px -- {:.2f}, 10px -- {:.2f}, 20px -- {:.2f}, 30px -- {:.2f}'.format(val_acc_5,
-                                                                                                           val_acc_10,
-                                                                                                           val_acc_20,
-                                                                                                           val_acc_30))
+        logger.info(
+            'val accuracies: 5px -- {:.2f}, 10px -- {:.2f}, 20px -- {:.2f}, 30px -- {:.2f}, 50px -- {:.2f}'.format(
+                val_acc_5,
+                val_acc_10,
+                val_acc_20,
+                val_acc_30.
+                val_acc_50))
 
 
 if __name__ == '__main__':
