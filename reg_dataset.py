@@ -34,6 +34,7 @@ class PoseDataset(data.Dataset):
 
         center_point_path = os.path.join(self.crop_data_path, 'center_points.txt')
         self.center_points = np.loadtxt(center_point_path)
+        print(self.center_points)
 
         self.length = len(self.img_list)
         self.colorjitter = transforms.ColorJitter(brightness=0.5, contrast=0.5, saturation=0.5, hue=0.3)
