@@ -6,7 +6,7 @@ import numpy as np
 # import tensorflow.compat.v1 as tf
 
 from torch.utils.data import DataLoader, sampler
-from reg_model import RegTransNet
+from models.reg_model_pure_res34 import RegTransNet
 from lib.reg_loss import RegLoss
 from lib.utils import setup_logger
 from reg_dataset import PoseDataset
