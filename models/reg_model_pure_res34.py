@@ -28,6 +28,7 @@ class RegTransNet(nn.Module):
 
     def forward(self, x):
         x = self.backbone_resnet(x)
+        x = torch.flatten(x, 1)
         x = self.output(x)
         return x
 
