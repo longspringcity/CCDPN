@@ -13,8 +13,8 @@ parser.add_argument('--mode', default='test', help='train/test')
 parser.add_argument('--visualize', type=bool, default=False, help='Is circle center point')
 opt = parser.parse_args()
 
-data_dir = '/media/zhangtong/DATA/data'
-result_dir = './data_crop/Real/{:s}'.format(opt.mode)
+data_dir = '../data'
+result_dir = '../data_crop/Real/{:s}'.format(opt.mode)
 file_path = 'Real/{:s}_list.txt'.format(opt.mode)
 intrinsics = np.array([[591.0125, 0, 322.525], [0, 590.16775, 244.11084], [0, 0, 1]])
 class_names = {1: 'bottle', 2: 'bowl', 3: 'camera', 4: 'can', 5: 'laptop', 6: 'mug'}
