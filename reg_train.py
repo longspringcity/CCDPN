@@ -7,7 +7,7 @@ import numpy as np
 
 from torch.utils.data import DataLoader, sampler
 from models.reg_model_pure_res34 import RegTransNet
-from lib.reg_loss import RegLoss
+from lib.reg_loss_L2 import RegLoss
 from lib.utils import setup_logger
 from reg_dataset import PoseDataset
 from tqdm import tqdm
