@@ -48,6 +48,9 @@ class PoseDataset(data.Dataset):
 
         center_point_path = os.path.join(self.crop_data_path, 'center_points.txt')
         center_points = np.loadtxt(center_point_path)
+        print(len(self.img_list))
+        print(len(center_points))
+        print(center_points)
         center_point = center_points[index]
 
         raw_rgb, center = letterbox_image(raw_rgb, (192, 192), center=center_point)
