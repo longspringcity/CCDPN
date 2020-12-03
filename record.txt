@@ -1,0 +1,2 @@
+import torch.nn.functional as F
+F.interpolate(stage(features), size=(h, w), mode='bilinear', align_corners=True) for stage in self.stages
