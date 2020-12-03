@@ -127,7 +127,7 @@ def train():
         val_acc_5 = 100 * (test_success_5 / opt.num_val)
         val_acc_10 = 100 * (test_success_10 / opt.num_val)
         val_acc_20 = 100 * (test_success_20 / opt.num_val)
-        val_acc_30 = 100 * (test_success_20 / opt.num_val)
+        val_acc_30 = 100 * (test_success_30 / opt.num_val)
         # summary = tf.Summary(value=[tf.Summary.Value(tag='test_acc_5', simple_value=val_acc_5),
         #                             tf.Summary.Value(tag='test_acc_10', simple_value=val_acc_10),
         #                             tf.Summary.Value(tag='test_acc_20', simple_value=val_acc_20)])
