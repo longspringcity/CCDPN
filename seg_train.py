@@ -3,7 +3,6 @@ import torch
 # import random
 import argparse
 import numpy as np
-import tensorflow.compat.v1 as tf
 # import matplotlib.pyplot as plt
 
 from torch.utils.data import DataLoader
@@ -28,7 +27,7 @@ opt = parser.parse_args()
 def train():
     if not os.path.exists(opt.result_dir):
         os.makedirs(opt.result_dir)
-    tb_writer = tf.summary.FileWriter(opt.result_dir)
+    # tb_writer = tf.summary.FileWriter(opt.result_dir)
     logger = setup_logger('train_log', os.path.join(opt.result_dir, 'log.txt'))
     for key, value in vars(opt).items():
         logger.info(key + ': ' + str(value))
@@ -37,8 +36,8 @@ def train():
     model.cuda()
     criterion = SegLoss().cuda()
     # 准备数据
-    train_dataset = SegDataset('Real', 'train', './data_crop', 192, 5)
-    # test_dataset = PoseDataset('Real', 'test', './data_crop', 192, 5)
+    train_dataset = SegDataset('Real', 'train', '../data_crop', 192, 5)
+    # test_dataset = PoseDataset('Real', 'test', '../data_crop', 192, 5)
     train_dataset_size = train_dataset.length
     # test_dataset_size = test_dataset.length
     # test_idx = list(range(test_dataset_size))
@@ -71,8 +70,8 @@ def train():
             running_iou += iou.item()
 
             # write results to tensorboard
-            summary = tf.Summary(value=[tf.Summary.Value(tag='train_loss', simple_value=loss)])
-            tb_writer.add_summary(summary, global_step)
+            # summary = tf.Summary(value=[tf.Summary.Value(tag='train_loss', simple_value=loss)])
+            # tb_writer.add_summary(summary, global_step)
 
             # if i == 0:
             #     array_real_mask = real_mask.detach().cpu().numpy()[0]
