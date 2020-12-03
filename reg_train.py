@@ -58,7 +58,7 @@ def train():
                             desc='Training... Epoch: {:02d}, progress'.format(epoch + 1)):
             rgb, real_pos = data
             rgb = rgb.cuda()
-            real_pos = real_pos.cuda()
+            real_pos = real_pos[:2].cuda()
             pred_pos = model(rgb)
             loss = criterion(pred_pos, real_pos)
             optimizer.zero_grad()
