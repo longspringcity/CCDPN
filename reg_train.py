@@ -11,7 +11,7 @@ from tensorboardX import SummaryWriter
 
 from lib.reg_loss_L2 import RegLoss
 from lib.utils import setup_logger
-from models.reg_model_pure_res34 import RegTransNet
+from models.reg_model_res34with6conv import RegTransNet
 from reg_dataset import PoseDataset
 
 
@@ -39,7 +39,7 @@ def train():
     model.cuda()
     criterion = RegLoss().cuda()
     # 将模型图写入tensorboard
-    tb_writer = SummaryWriter(opt.result_dir, flush_secs=60)
+    tb_writer = SummaryWriter(opt.result_dir, flush_secs=20)
     graph_inputs = torch.rand(1, 3, 192, 192).cuda()
     tb_writer.add_graph(model, graph_inputs)
     # 准备数据
