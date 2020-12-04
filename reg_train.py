@@ -157,10 +157,11 @@ def train():
         real_pos = real_pos.cuda()
         pred_pos = model(rgb)
         distance = torch.norm(real_pos - pred_pos, 2, dim=1)
-        cv2.circle(raw_rgb, (real_pos[0, 0], real_pos[0, 1]), 3, (255, 0, 0), cv2.FILLED)  # 真实值为蓝色
-        cv2.circle(raw_rgb, (pred_pos[0, 0], pred_pos[0, 1]), 3, (255, 255, 0), cv2.FILLED)  # 预测值为黄色
-        img_path = os.path.join(opt.result_dir, '{:04d}_{:.2f}.png'.format(i, distance.item()))
-        cv2.imwrite(img_path, raw_rgb)
+        if distance >= 20:
+            cv2.circle(raw_rgb, (real_pos[0, 0], real_pos[0, 1]), 3, (255, 0, 0), cv2.FILLED)  # 真实值为蓝色
+            cv2.circle(raw_rgb, (pred_pos[0, 0], pred_pos[0, 1]), 3, (0, 255, 255), cv2.FILLED)  # 预测值为黄色
+            img_path = os.path.join(opt.result_dir, '{:04d}_{:.2f}.png'.format(i, distance.item()))
+            cv2.imwrite(img_path, raw_rgb)
 
 
 if __name__ == '__main__':
