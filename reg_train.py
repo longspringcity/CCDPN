@@ -1,6 +1,7 @@
 import argparse
 import os
 import random
+import cv2
 
 import numpy as np
 import torch
@@ -145,6 +146,19 @@ def train():
                 val_acc_20,
                 val_acc_30,
                 val_acc_50))
+    # 可视化预测结果
+    model.eval()
+    visual_dataloader = DataLoader(test_dataset, batch_size=1, num_workers=opt.num_workers, pin_memory=True)
+    for i, data in enumerate(visual_dataloader):
+        raw_rgb, real_pos = visual_dataloader
+        rgb = raw_rgb.cuda()
+        real_pos = real_pos.cuda()
+        pred_pos = model(rgb)
+        distance = torch.norm(real_pos - pred_pos, 2, dim=1)
+        print(raw_rgb.shape)
+        raw_rgb = raw_rgb.numpy()
+        raw_rgb = np.transpose(raw_rgb, (1, 2, 0))
+        cv2.imwrite('{:04d}_{:.2f}'.format(i, distance.item()), raw_rgb)
 
 
 if __name__ == '__main__':
