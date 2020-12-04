@@ -43,9 +43,9 @@ def train():
     graph_inputs = torch.rand(1, 3, 192, 192).cuda()
     tb_writer.add_graph(model, graph_inputs)
     # 准备数据
-    train_dataset = PoseDataset('Real', 'train', '../data_crop', 192, 5)
-    test_dataset = PoseDataset('Real', 'test', '../data_crop', 192, 5)
-    visual_test_dataset = PoseDataset('Real', 'test', '../data_crop', 192, 5, visualize=True)
+    train_dataset = PoseDataset('Real', 'train', '../data_crop', 192, 1)
+    test_dataset = PoseDataset('Real', 'test', '../data_crop', 192, 1)
+    visual_test_dataset = PoseDataset('Real', 'test', '../data_crop', 192, 1, visualize=True)
     train_dataset_size = train_dataset.length
     test_dataset_size = test_dataset.length
     train_idx = list(range(train_dataset_size))
