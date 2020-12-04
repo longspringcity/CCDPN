@@ -7,13 +7,13 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader, sampler
 from tqdm import tqdm
+from tensorboardX import SummaryWriter
 
 from lib.reg_loss_L2 import RegLoss
 from lib.utils import setup_logger
 from models.reg_model_pure_res34 import RegTransNet
 from reg_dataset import PoseDataset
 
-# import tensorflow.compat.v1 as tf
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--lr', type=float, default=1e-3, help='initial learning rate')
@@ -30,7 +30,7 @@ opt = parser.parse_args()
 def train():
     if not os.path.exists(opt.result_dir):
         os.makedirs(opt.result_dir)
-    # tb_writer = tf.summary.FileWriter(opt.result_dir)
+
     logger = setup_logger('train_log', os.path.join(opt.result_dir, 'log.txt'))
     for key, value in vars(opt).items():
         logger.info(key + ': ' + str(value))
@@ -38,6 +38,10 @@ def train():
     model = RegTransNet()
     model.cuda()
     criterion = RegLoss().cuda()
+    # 将模型图写入tensorboard
+    tb_writer = SummaryWriter(opt.result_dir, flush_secs=60)
+    graph_inputs = torch.rand(1, 3, 192, 192).cuda()
+    tb_writer.add_graph(model, graph_inputs)
     # 准备数据
     train_dataset = PoseDataset('Real', 'train', '../data_crop', 192, 5)
     test_dataset = PoseDataset('Real', 'test', '../data_crop', 192, 5)
@@ -72,8 +76,7 @@ def train():
             running_loss += loss.item()
 
             # write results to tensorboard
-            # summary = tf.Summary(value=[tf.Summary.Value(tag='train_loss', simple_value=loss)])
-            # tb_writer.add_summary(summary, global_step)
+            tb_writer.add_scalar('train_loss', loss, global_step)
         running_loss /= num_batch
         logger.info('>>>>----Epoch {:02d} train finished! running loss: {:.2f}---<<<<'.format(epoch + 1, running_loss))
 
@@ -102,10 +105,9 @@ def train():
             train_acc_30 = 100 * (train_success_30 / opt.num_val)
             train_acc_50 = 100 * (train_success_50 / opt.num_val)
             # write results to tensorboard
-            # summary = tf.Summary(value=[tf.Summary.Value(tag='train_acc_5', simple_value=train_acc_5),
-            #                             tf.Summary.Value(tag='train_acc_10', simple_value=train_acc_10),
-            #                             tf.Summary.Value(tag='train_acc_20', simple_value=train_acc_20)])
-            # tb_writer.add_summary(summary, global_step)
+            tb_writer.add_scalar('train_acc_5', train_acc_5, global_step)
+            tb_writer.add_scalar('train_acc_10', train_acc_10, global_step)
+            tb_writer.add_scalar('train_acc_20', train_acc_20, global_step)
             logger.info(
                 'train accuracies: 5px -- {:.2f}, 10px -- {:.2f}, 20px -- {:.2f}, 30px -- {:.2f}, 50px -- {:.2f}'.format(
                     train_acc_5,
