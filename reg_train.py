@@ -152,8 +152,7 @@ def train():
     visual_dataloader = DataLoader(visual_test_dataset, batch_size=1, num_workers=opt.num_workers, pin_memory=True)
     for i, data in enumerate(visual_dataloader):
         raw_rgb, rgb, real_pos = data
-        print(raw_rgb)
-        print(raw_rgb.shape)
+        raw_rgb = raw_rgb[0]
         rgb = rgb.cuda()
         real_pos = real_pos.cuda()
         pred_pos = model(rgb)
