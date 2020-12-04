@@ -41,6 +41,7 @@ def train():
     # 准备数据
     train_dataset = PoseDataset('Real', 'train', '../data_crop', 192, 5)
     test_dataset = PoseDataset('Real', 'test', '../data_crop', 192, 5)
+    visual_test_dataset = PoseDataset('Real', 'test', '../data_crop', 192, 5, visualize=True)
     train_dataset_size = train_dataset.length
     test_dataset_size = test_dataset.length
     train_idx = list(range(train_dataset_size))
@@ -148,14 +149,13 @@ def train():
                 val_acc_50))
     # 可视化预测结果
     model.eval()
-    visual_dataloader = DataLoader(test_dataset, batch_size=1, num_workers=opt.num_workers, pin_memory=True)
+    visual_dataloader = DataLoader(visual_test_dataset, batch_size=1, num_workers=opt.num_workers, pin_memory=True)
     for i, data in enumerate(visual_dataloader):
-        raw_rgb, real_pos = data
-        rgb = raw_rgb.cuda()
+        raw_rgb, rgb, real_pos = data
+        rgb = rgb.cuda()
         real_pos = real_pos.cuda()
         pred_pos = model(rgb)
         distance = torch.norm(real_pos - pred_pos, 2, dim=1)
-        raw_rgb = raw_rgb[0].numpy().transpose(1, 2, 0).astype(np.uint8)
         cv2.circle(raw_rgb, real_pos[0], 3, (255, 0, 0), cv2.FILLED)  # 真实值为蓝色
         cv2.circle(raw_rgb, pred_pos[0], 3, (255, 255, 0), cv2.FILLED)  # 预测值为黄色
         cv2.imwrite('{:04d}_{:.2f}'.format(i, distance.item()), raw_rgb)
