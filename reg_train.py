@@ -11,7 +11,7 @@ from tensorboardX import SummaryWriter
 
 from lib.reg_loss_L2 import RegLoss
 from lib.utils import setup_logger
-from models.reg_model_res34with6conv import RegTransNet
+from models.reg_model_pure_res34 import RegTransNet
 from reg_dataset import PoseDataset
 
 
