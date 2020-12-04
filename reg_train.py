@@ -150,7 +150,7 @@ def train():
     # 可视化预测结果
     model.eval()
     visual_dataloader = DataLoader(visual_test_dataset, batch_size=1, num_workers=opt.num_workers, pin_memory=True)
-    for i, data in tqdm(enumerate(visual_dataloader)):
+    for i, data in tqdm(enumerate(visual_dataloader), total=test_dataset_size):
         raw_rgb, rgb, real_pos = data
         raw_rgb = raw_rgb[0].numpy()
         rgb = rgb.cuda()
